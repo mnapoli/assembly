@@ -1,0 +1,27 @@
+{
+    "name": "mnapoli/assembly",
+    "type": "library",
+    "description": "Implementation of interop container definitions",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Matthieu Napoli",
+            "email": "matthieu@mnapoli.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Assembly\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.3",
+        "container-interop/definition-interop": "@dev"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/container-interop/definition-interop.git"
+        }
+    ]
+}
