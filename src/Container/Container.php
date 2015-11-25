@@ -12,7 +12,7 @@ use Interop\Container\Definition\ParameterDefinitionInterface;
 use Interop\Container\Definition\ReferenceInterface;
 
 /**
- * Simple container that can resolve standard definitions.
+ * Simple immutable container that can resolve standard definitions.
  */
 class Container implements ContainerInterface
 {
@@ -27,12 +27,13 @@ class Container implements ContainerInterface
     private $entries = [];
 
     /**
-     * Register a definition provider.
+     * @param array $entries Container entries.
      */
-    public function addProvider(DefinitionProviderInterface $definitionProvider)
+    public function __construct(array $entries, array $providers = [])
     {
-        foreach ($definitionProvider->getDefinitions() as $definition) {
-            $this->definitions[$definition->getIdentifier()] = $definition;
+        $this->entries = $entries;
+        foreach ($providers as $provider) {
+            $this->addProvider($provider);
         }
     }
 
@@ -57,14 +58,13 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Set an entry in the container.
-     *
-     * @param string $id
-     * @param mixed $entry
+     * Register a definition provider.
      */
-    public function set($id, $entry)
+    private function addProvider(DefinitionProviderInterface $definitionProvider)
     {
-        $this->entries[$id] = $entry;
+        foreach ($definitionProvider->getDefinitions() as $definition) {
+            $this->definitions[$definition->getIdentifier()] = $definition;
+        }
     }
 
     /**

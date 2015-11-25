@@ -20,9 +20,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function stores_and_returns_entries()
     {
-        $container = new Container();
-
-        $container->set('foo', 'bar');
+        $container = new Container([
+            'foo' => 'bar',
+        ]);
 
         $this->assertTrue($container->has('foo'));
         $this->assertSame('bar', $container->get('foo'));
@@ -37,8 +37,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             new ParameterDefinition('foo', 'bar'),
         ]);
 
-        $container = new Container();
-        $container->addProvider($provider);
+        $container = new Container([], [$provider]);
 
         $this->assertTrue($container->has('foo'));
         $this->assertSame('bar', $container->get('foo'));
@@ -59,8 +58,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $definition,
         ]);
 
-        $container = new Container();
-        $container->addProvider($provider);
+        $container = new Container([], [$provider]);
 
         $this->assertTrue($container->has('foo'));
         /** @var Class1 $service */
@@ -88,13 +86,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $definition,
         ]);
 
-        $container = new Container();
-        $container->addProvider($provider);
-        $container->set('ref1', 'public field');
-        $container->set('ref2', 'constructor param1');
-        $container->set('ref3', 'constructor param2');
-        $container->set('ref4', 'setter param1');
-        $container->set('ref5', 'setter param2');
+        $container = new Container([
+            'ref1' => 'public field',
+            'ref2' => 'constructor param1',
+            'ref3' => 'constructor param2',
+            'ref4' => 'setter param1',
+            'ref5' => 'setter param2',
+        ], [$provider]);
 
         $this->assertTrue($container->has('foo'));
         /** @var Class1 $service */
@@ -110,6 +108,24 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function resolves_instance_definitions_as_singleton()
+    {
+        $definition = new InstanceDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition->addConstructorArgument('param1');
+        $definition->addConstructorArgument('param2');
+
+        $provider = new ArrayDefinitionProvider([
+            $definition,
+        ]);
+
+        $container = new Container([], [$provider]);
+
+        $this->assertSame($container->get('foo'), $container->get('foo'));
+    }
+
+    /**
+     * @test
+     */
     public function resolves_alias_definitions()
     {
         $provider = new ArrayDefinitionProvider([
@@ -117,8 +133,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             new ParameterDefinition('bar', 'qux'),
         ]);
 
-        $container = new Container();
-        $container->addProvider($provider);
+        $container = new Container([], [$provider]);
 
         $this->assertTrue($container->has('foo'));
         $this->assertSame('qux', $container->get('foo'));
@@ -134,8 +149,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             new InstanceDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
         ]);
 
-        $container = new Container();
-        $container->addProvider($provider);
+        $container = new Container([], [$provider]);
 
         $this->assertTrue($container->has('foo'));
         $this->assertSame('Hello', $container->get('foo'));
@@ -154,8 +168,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             new InstanceDefinition('subFactory', 'Assembly\Test\Container\Fixture\Factory'),
         ]);
 
-        $container = new Container();
-        $container->addProvider($provider);
+        $container = new Container([], [$provider]);
 
         $this->assertTrue($container->has('foo'));
         $this->assertSame('Hello', $container->get('foo'));
@@ -171,8 +184,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             new InstanceDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
         ]);
 
-        $container = new Container();
-        $container->addProvider($provider);
+        $container = new Container([], [$provider]);
 
         $this->assertTrue($container->has('foo'));
         $this->assertSame('foo', $container->get('foo'));
