@@ -8,7 +8,7 @@
 
 Here are examples showing how to use each definition:
 
-### [`ParameterDefinition`](src/ParameterDefinition.php)
+### ParameterDefinition
 
 ```php
 $definition = new ParameterDefinition('db.port', 3306);
@@ -16,7 +16,7 @@ $definition = new ParameterDefinition('db.port', 3306);
 
 This definition will define a container entry `"db.port"`. That means `get('db.port')` will return `3306`.
 
-### [`AliasDefinition`](src/AliasDefinition.php)
+### AliasDefinition
 
 ```php
 $definition = new AliasDefinition('logger', 'monolog');
@@ -24,7 +24,7 @@ $definition = new AliasDefinition('logger', 'monolog');
 
 This definition will alias the entry "logger" to the entry "monolog". That means that `get('logger')` will return the result of `get('monolog')`.
 
-### [`InstanceDefinition`](src/InstanceDefinition.php)
+### InstanceDefinition
 
 ```php
 $definition = new InstanceDefinition('db', 'PDO');
@@ -42,7 +42,7 @@ $definition->addConstructorArgument(new Reference('db.connection_string'), 'user
 
 The definition above will return the result of `new PDO($container->get('db.connection_string'), 'user', 'password')`.
 
-### [`FactoryDefinition`](src/FactoryDefinition.php)
+### FactoryDefinition
 
 ```php
 $definition = new FactoryDefinition('db', new Reference('db.factory'), 'create');
