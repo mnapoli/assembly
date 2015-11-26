@@ -1,0 +1,51 @@
+<?php
+
+namespace Assembly\Test;
+
+use Assembly\AliasDefinition;
+use Assembly\ArrayDefinitionProvider;
+use Assembly\FactoryDefinition;
+use Assembly\InstanceDefinition;
+use Assembly\ParameterDefinition;
+use Assembly\Reference;
+use Interop\Container\Definition\DefinitionInterface;
+
+class ArrayDefinitionProviderTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @test
+     */
+    public function provide_definitions_from_array()
+    {
+        $provider = new ArrayDefinitionProvider([
+            'parameter' => 'Hello world',
+
+            'instance' => \Assembly\instance('Assembly\Test\Container\Fixture\Class1')
+                ->setConstructorArguments('param1', \Assembly\get('parameter'))
+                ->addPropertyAssignment('publicField', 'value1')
+                ->addMethodCall('setSomething', 'param1', \Assembly\get('parameter')),
+
+            'factory.service' => \Assembly\instance('Assembly\Test\Container\Fixture\Factory'),
+            'factory' => \Assembly\factory('factory.service', 'create'),
+
+            'alias' => \Assembly\alias('parameter'),
+        ]);
+
+        /** @var DefinitionInterface[] $definitions */
+        $definitions = $provider->getDefinitions();
+
+        $this->assertCount(5, $definitions);
+
+        $this->assertEquals(new ParameterDefinition('parameter', 'Hello world'), $definitions[0]);
+
+        $expectedInstance = new InstanceDefinition('instance', 'Assembly\Test\Container\Fixture\Class1');
+        $expectedInstance->setConstructorArguments('param1', new Reference('parameter'));
+        $expectedInstance->addPropertyAssignment('publicField', 'value1');
+        $expectedInstance->addMethodCall('setSomething', 'param1', new Reference('parameter'));
+        $this->assertEquals($expectedInstance, $definitions[1]);
+
+        $this->assertEquals(new InstanceDefinition('factory.service', 'Assembly\Test\Container\Fixture\Factory'), $definitions[2]);
+        $this->assertEquals(new FactoryDefinition('factory', new Reference('factory.service'), 'create'), $definitions[3]);
+        $this->assertEquals(new AliasDefinition('alias', 'parameter'), $definitions[4]);
+    }
+}

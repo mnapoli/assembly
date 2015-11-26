@@ -23,4 +23,12 @@ abstract class NamedDefinition implements DefinitionInterface
     {
         return $this->identifier;
     }
+
+    /**
+     * @param string $identifier
+     */
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+    }
 }

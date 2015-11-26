@@ -48,14 +48,55 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
         $this->constructorArguments[] = $argument;
     }
 
-    public function addPropertyAssignment(PropertyAssignmentInterface $propertyAssignment)
+    /**
+     * Set constructor arguments. This method take as many parameters as necessary.
+     *
+     * @param scalar|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
+     * @param scalar|ReferenceInterface ...
+     *
+     * @return $this
+     */
+    public function setConstructorArguments($argument)
     {
-        $this->propertyAssignments[] = $propertyAssignment;
+        $this->constructorArguments = func_get_args();
+
+        return $this;
     }
 
-    public function addMethodCall(MethodCallInterface $methodCall)
+    /**
+     * Set a value to assign to a property.
+     *
+     * @param string $propertyName Name of the property to set.
+     * @param scalar|ReferenceInterface $value Can be a scalar value or a reference to another entry.
+     *
+     * @return $this
+     */
+    public function addPropertyAssignment($propertyName, $value)
     {
-        $this->methodCalls[] = $methodCall;
+        $this->propertyAssignments[] = new PropertyAssignment($propertyName, $value);
+
+        return $this;
+    }
+
+    /**
+     * Set a method to be called after instantiating the class.
+     *
+     * After the $methodName parameter, this method take as many parameters as necessary.
+     *
+     * @param string $methodName Name of the method to call.
+     * @param scalar|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
+     * @param scalar|ReferenceInterface ...
+     *
+     * @return $this
+     */
+    public function addMethodCall($methodName, $argument)
+    {
+        $arguments = func_get_args();
+        array_shift($arguments);
+
+        $this->methodCalls[] = new MethodCall($methodName, $arguments);
+
+        return $this;
     }
 
     /**

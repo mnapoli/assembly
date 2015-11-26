@@ -4,9 +4,68 @@
 
 [![Build Status](https://travis-ci.org/mnapoli/assembly.svg?branch=master)](https://travis-ci.org/mnapoli/assembly)
 
-## Definitions
+## Installation
 
-Here are examples showing how to use each definition:
+```
+composer require mnapoli/assembly@dev
+```
+
+## Usage
+
+While you can implement `Interop\Container\Definition\DefinitionProviderInterface` and return an array of definition objects built manually, Assembly provides a natural API to create definitions more easily.
+
+To take advantage of this, simply extend `Assembly\ArrayDefinitionProvider` and fill the `getArrayDefinitions` method:
+
+```php
+class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
+{
+    public function getArrayDefinitions()
+    {
+        return [
+            'logger.destination' => '/var/log/myapp.log',
+
+            'logger' => \Assembly\instance('MyLogger')
+                ->setConstructorArguments('warning', \Assembly\get('logger.destination'))
+                ->addMethodCall('setDebug', true),
+
+            'super_mailer' => \Assembly\factory('mailer.factory', 'create'),
+            'super_mailer.factory' => \Assembly\instance('MailerFactory'),
+
+            'mailer' => \Assembly\alias('super_mailer'),
+        ];
+    }
+}
+```
+
+If you are using PHP 5.6 or above, you can import namespaced functions:
+
+```php
+use function \Assembly\instance;
+use function \Assembly\alias;
+
+class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
+{
+    public function getArrayDefinitions()
+    {
+        return [
+            'logger' => instance(MyLogger::class),
+            'logger_alias' => alias('logger'),
+        ];
+    }
+}
+```
+
+If you do not want to write a new class, you can also instantiate a new provider directly:
+
+```php
+$provider = new ArrayDefinitionProvider([
+    // add definitions here
+]);
+```
+
+## Definition classes
+
+If you do not want to use the function helpers, you can also create definition instances directly.
 
 ### ParameterDefinition
 
@@ -53,29 +112,6 @@ $definition = new FactoryDefinition('db', new Reference('db.factory'), 'create')
 ```
 
 The definition above will call the `create()` method on the `db.factory` container entry and return its result.
-
-## Definition providers
-
-Here is an example on how to implement a *container-interop* definition provider:
-
-```php
-use Interop\Container\Definition\DefinitionProviderInterface;
-
-class MyModuleDefinitionProvider implements DefinitionProviderInterface
-{
-    public function getDefinitions()
-    {
-        $definitions = [];
-
-        $definitions[] = new ParameterDefinition(...);
-        $definitions[] = new AliasDefinition(...);
-        $definitions[] = new InstanceDefinition(...);
-        $definitions[] = new FactoryDefinition(...);
-
-        return $definitions;
-    }
-}
-```
 
 ## Container
 

@@ -6,9 +6,7 @@ use Assembly\AliasDefinition;
 use Assembly\Container\Container;
 use Assembly\FactoryDefinition;
 use Assembly\InstanceDefinition;
-use Assembly\MethodCall;
 use Assembly\ParameterDefinition;
-use Assembly\PropertyAssignment;
 use Assembly\Reference;
 use Assembly\Test\Container\Fixture\Class1;
 
@@ -48,10 +46,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function resolves_instance_definitions()
     {
         $definition = new InstanceDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
-        $definition->addPropertyAssignment(new PropertyAssignment('publicField', 'public field'));
+        $definition->addPropertyAssignment('publicField', 'public field');
         $definition->addConstructorArgument('constructor param1');
         $definition->addConstructorArgument('constructor param2');
-        $definition->addMethodCall(new MethodCall('setSomething', ['setter param1', 'setter param2']));
+        $definition->addMethodCall('setSomething', 'setter param1', 'setter param2');
 
         $provider = new FakeDefinitionProvider([
             $definition,
@@ -76,10 +74,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function resolves_references_in_instance_definitions()
     {
         $definition = new InstanceDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
-        $definition->addPropertyAssignment(new PropertyAssignment('publicField', new Reference('ref1')));
+        $definition->addPropertyAssignment('publicField', new Reference('ref1'));
         $definition->addConstructorArgument(new Reference('ref2'));
         $definition->addConstructorArgument(new Reference('ref3'));
-        $definition->addMethodCall(new MethodCall('setSomething', [new Reference('ref4'), new Reference('ref5')]));
+        $definition->addMethodCall('setSomething', new Reference('ref4'), new Reference('ref5'));
 
         $provider = new FakeDefinitionProvider([
             $definition,

@@ -19,7 +19,7 @@ class MethodCall implements MethodCallInterface
 
     /**
      * @param string $methodName
-     * @param  array $arguments Array of scalar or ReferenceInterface
+     * @param array $arguments Array of scalar or ReferenceInterface
      */
     public function __construct($methodName, array $arguments)
     {
