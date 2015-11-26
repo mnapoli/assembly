@@ -28,7 +28,9 @@ This definition will alias the entry "logger" to the entry "monolog". That means
 
 ```php
 $definition = new InstanceDefinition('db', 'PDO');
-$definition->addConstructorArgument('mysql:host=localhost;dbname=test', 'user', 'password');
+$definition->addConstructorArgument('mysql:host=localhost;dbname=test');
+$definition->addConstructorArgument('user');
+$definition->addConstructorArgument('password');
 ```
 
 The definition above will return the result of `new PDO('mysql:host=localhost;dbname=test', 'user', 'password')`.
@@ -37,7 +39,9 @@ References can also be used:
 
 ```php
 $definition = new InstanceDefinition('db', 'PDO');
-$definition->addConstructorArgument(new Reference('db.connection_string'), 'user', 'password');
+$definition->addConstructorArgument(new Reference('db.connection_string'));
+$definition->addConstructorArgument('user');
+$definition->addConstructorArgument('password');
 ```
 
 The definition above will return the result of `new PDO($container->get('db.connection_string'), 'user', 'password')`.
