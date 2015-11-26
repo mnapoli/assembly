@@ -46,16 +46,19 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
     public function addConstructorArgument($argument)
     {
         $this->constructorArguments[] = $argument;
+        return $this;
     }
 
     public function addPropertyAssignment(PropertyAssignmentInterface $propertyAssignment)
     {
         $this->propertyAssignments[] = $propertyAssignment;
+        return $this;
     }
 
     public function addMethodCall(MethodCallInterface $methodCall)
     {
         $this->methodCalls[] = $methodCall;
+        return $this;
     }
 
     /**
