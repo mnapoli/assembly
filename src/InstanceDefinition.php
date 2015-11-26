@@ -88,12 +88,12 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
      * After the $methodName parameter, this method take as many parameters as necessary.
      *
      * @param string $methodName Name of the method to call.
-     * @param scalar|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
-     * @param scalar|ReferenceInterface ...
+     * @param string|number|bool|array|ReferenceInterface... Can be a scalar value, an array of scalar or
+     * a reference to another entry. See \Assembly\MethodCall::__construct fore more informations.
      *
      * @return $this
      */
-    public function addMethodCall($methodName, $argument)
+    public function addMethodCall($methodName)
     {
         $arguments = func_get_args();
         array_shift($arguments);
