@@ -71,6 +71,7 @@ class Container implements ContainerInterface
      * Resolve a definition and return the resulting value.
      *
      * @param DefinitionInterface $definition
+     * @param string $requestedId
      * @return mixed
      * @throws UnsupportedDefinition
      * @throws EntryNotFound A dependency was not found.
