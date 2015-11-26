@@ -18,6 +18,11 @@ class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInte
     private $methodName;
 
     /**
+     * @var array
+     */
+    private $arguments;
+
+    /**
      * @param string $identifier
      * @param ReferenceInterface $reference
      * @param string $methodName
@@ -30,6 +35,21 @@ class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInte
         $this->methodName = $methodName;
     }
 
+    /**
+     * Set the arguments to pass when calling the factory.
+     *
+     * @param scalar|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
+     * @param scalar|ReferenceInterface ...
+     *
+     * @return $this
+     */
+    public function setArguments($argument)
+    {
+        $this->arguments = func_get_args();
+
+        return $this;
+    }
+
     public function getReference()
     {
         return $this->reference;
@@ -38,5 +58,10 @@ class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInte
     public function getMethodName()
     {
         return $this->methodName;
+    }
+
+    public function getArguments()
+    {
+        return $this->arguments;
     }
 }

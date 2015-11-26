@@ -13,7 +13,7 @@ class MethodCall implements MethodCallInterface
     private $methodName;
 
     /**
-     * @var scalar|ReferenceInterface
+     * @var scalar[]|ReferenceInterface[]
      */
     private $arguments = [];
 

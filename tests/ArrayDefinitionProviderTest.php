@@ -26,7 +26,8 @@ class ArrayDefinitionProviderTest extends \PHPUnit_Framework_TestCase
                 ->addMethodCall('setSomething', 'param1', \Assembly\get('parameter')),
 
             'factory.service' => \Assembly\instance('Assembly\Test\Container\Fixture\Factory'),
-            'factory' => \Assembly\factory('factory.service', 'create'),
+            'factory' => \Assembly\factory('factory.service', 'create')
+                ->setArguments('param1'),
 
             'alias' => \Assembly\alias('parameter'),
         ]);
@@ -45,7 +46,9 @@ class ArrayDefinitionProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedInstance, $definitions[1]);
 
         $this->assertEquals(new InstanceDefinition('factory.service', 'Assembly\Test\Container\Fixture\Factory'), $definitions[2]);
-        $this->assertEquals(new FactoryDefinition('factory', new Reference('factory.service'), 'create'), $definitions[3]);
+        $expectedFactory = new FactoryDefinition('factory', new Reference('factory.service'), 'create');
+        $expectedFactory->setArguments('param1');
+        $this->assertEquals($expectedFactory, $definitions[3]);
         $this->assertEquals(new AliasDefinition('alias', 'parameter'), $definitions[4]);
     }
 }
