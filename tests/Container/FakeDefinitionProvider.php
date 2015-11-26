@@ -1,10 +1,10 @@
 <?php
 
-namespace Assembly\Test;
+namespace Assembly\Test\Container;
 
 use Interop\Container\Definition\DefinitionProviderInterface;
 
-class ArrayDefinitionProvider implements DefinitionProviderInterface
+class FakeDefinitionProvider implements DefinitionProviderInterface
 {
     private $definitions;
 
