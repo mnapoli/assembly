@@ -41,7 +41,7 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
     }
 
     /**
-     * @param scalar|ReferenceInterface $argument
+     * @param string|number|bool|array|ReferenceInterface $argument
      *
      * @return $this
      */
@@ -55,8 +55,8 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
     /**
      * Set constructor arguments. This method take as many parameters as necessary.
      *
-     * @param scalar|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
-     * @param scalar|ReferenceInterface ...
+     * @param string|number|bool|array|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
+     * @param string|number|bool|array|ReferenceInterface ...
      *
      * @return $this
      */
@@ -71,7 +71,7 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
      * Set a value to assign to a property.
      *
      * @param string $propertyName Name of the property to set.
-     * @param scalar|ReferenceInterface $value Can be a scalar value or a reference to another entry.
+     * @param string|number|bool|array|ReferenceInterface $value Can be a scalar value or a reference to another entry.
      *
      * @return $this
      */

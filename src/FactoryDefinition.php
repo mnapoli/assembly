@@ -38,8 +38,8 @@ class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInte
     /**
      * Set the arguments to pass when calling the factory.
      *
-     * @param scalar|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
-     * @param scalar|ReferenceInterface ...
+     * @param string|number|bool|array|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
+     * @param string|number|bool|array|ReferenceInterface ...
      *
      * @return $this
      */
