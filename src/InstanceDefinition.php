@@ -42,10 +42,14 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
 
     /**
      * @param scalar|ReferenceInterface $argument
+     *
+     * @return $this
      */
     public function addConstructorArgument($argument)
     {
         $this->constructorArguments[] = $argument;
+
+        return $this;
     }
 
     /**

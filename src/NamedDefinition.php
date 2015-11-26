@@ -31,4 +31,9 @@ abstract class NamedDefinition implements DefinitionInterface
     {
         $this->identifier = $identifier;
     }
+
+    public function createReference()
+    {
+        return new Reference($this->getIdentifier());
+    }
 }
