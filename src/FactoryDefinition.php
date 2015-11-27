@@ -8,9 +8,9 @@ use Interop\Container\Definition\ReferenceInterface;
 class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInterface
 {
     /**
-     * @var ReferenceInterface
+     * @var ReferenceInterface|string
      */
-    private $reference;
+    private $factory;
 
     /**
      * @var string
@@ -24,14 +24,14 @@ class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInte
 
     /**
      * @param string $identifier
-     * @param ReferenceInterface $reference
+     * @param ReferenceInterface|string $factory A reference to the service being called or a fully qualified class name for static calls
      * @param string $methodName
      */
-    public function __construct($identifier, ReferenceInterface $reference, $methodName)
+    public function __construct($identifier, $factory, $methodName)
     {
         parent::__construct($identifier);
 
-        $this->reference = $reference;
+        $this->factory = $factory;
         $this->methodName = $methodName;
     }
 
@@ -50,9 +50,9 @@ class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInte
         return $this;
     }
 
-    public function getReference()
+    public function getFactory()
     {
-        return $this->reference;
+        return $this->factory;
     }
 
     public function getMethodName()
