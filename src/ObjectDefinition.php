@@ -2,12 +2,14 @@
 
 namespace Assembly;
 
-use Interop\Container\Definition\InstanceDefinitionInterface;
-use Interop\Container\Definition\MethodCallInterface;
-use Interop\Container\Definition\PropertyAssignmentInterface;
+use Assembly\ObjectInitializer\MethodCall;
+use Assembly\ObjectInitializer\PropertyAssignment;
+use Interop\Container\Definition\ObjectDefinitionInterface;
+use Interop\Container\Definition\ObjectInitializer\MethodCallInterface;
+use Interop\Container\Definition\ObjectInitializer\PropertyAssignmentInterface;
 use Interop\Container\Definition\ReferenceInterface;
 
-class InstanceDefinition extends NamedDefinition implements InstanceDefinitionInterface
+class ObjectDefinition extends NamedDefinition implements ObjectDefinitionInterface
 {
     /**
      * @var string
@@ -89,7 +91,7 @@ class InstanceDefinition extends NamedDefinition implements InstanceDefinitionIn
      *
      * @param string $methodName Name of the method to call.
      * @param string|number|bool|array|ReferenceInterface... Can be a scalar value, an array of scalar or
-     * a reference to another entry. See \Assembly\MethodCall::__construct fore more informations.
+     * a reference to another entry. See \Assembly\ObjectInitializer\MethodCall::__construct fore more informations.
      *
      * @return $this
      */

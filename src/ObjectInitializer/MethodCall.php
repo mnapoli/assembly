@@ -1,8 +1,8 @@
 <?php
 
-namespace Assembly;
+namespace Assembly\ObjectInitializer;
 
-use Interop\Container\Definition\MethodCallInterface;
+use Interop\Container\Definition\ObjectInitializer\MethodCallInterface;
 use Interop\Container\Definition\ReferenceInterface;
 
 class MethodCall implements MethodCallInterface

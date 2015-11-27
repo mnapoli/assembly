@@ -2,31 +2,31 @@
 
 namespace Assembly;
 
-if (!function_exists('Assembly\instance')) {
+if (!function_exists('Assembly\object')) {
 
     /**
      * Create an instance definition.
      *
      * @param string $className
      *
-     * @return InstanceDefinition
+     * @return ObjectDefinition
      */
-    function instance($className)
+    function object($className)
     {
-        return new InstanceDefinition(null, $className);
+        return new ObjectDefinition(null, $className);
     }
 
     /**
-     * Create a factory definition.
+     * Create a "factory call" definition.
      *
      * @param string $service ID of the service on which to call the method.
      * @param string $method Method to call on the service.
      *
-     * @return FactoryDefinition
+     * @return FactoryCallDefinition
      */
     function factory($service, $method)
     {
-        return new FactoryDefinition(null, new Reference($service), $method);
+        return new FactoryCallDefinition(null, new Reference($service), $method);
     }
 
     /**

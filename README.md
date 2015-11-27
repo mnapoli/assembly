@@ -84,10 +84,10 @@ $definition = new AliasDefinition('logger', 'monolog');
 
 This definition will alias the entry "logger" to the entry "monolog". That means that `get('logger')` will return the result of `get('monolog')`.
 
-### InstanceDefinition
+### ObjectDefinition
 
 ```php
-$definition = new InstanceDefinition('db', 'PDO');
+$definition = new ObjectDefinition('db', 'PDO');
 $definition->addConstructorArgument('mysql:host=localhost;dbname=test');
 $definition->addConstructorArgument('user');
 $definition->addConstructorArgument('password');
@@ -98,7 +98,7 @@ The definition above will return the result of `new PDO('mysql:host=localhost;db
 References can also be used:
 
 ```php
-$definition = new InstanceDefinition('db', 'PDO');
+$definition = new ObjectDefinition('db', 'PDO');
 $definition->addConstructorArgument(new Reference('db.connection_string'));
 $definition->addConstructorArgument('user');
 $definition->addConstructorArgument('password');
@@ -106,10 +106,10 @@ $definition->addConstructorArgument('password');
 
 The definition above will return the result of `new PDO($container->get('db.connection_string'), 'user', 'password')`.
 
-### FactoryDefinition
+### FactoryCallDefinition
 
 ```php
-$definition = new FactoryDefinition('db', new Reference('db.factory'), 'create');
+$definition = new FactoryCallDefinition('db', new Reference('db.factory'), 'create');
 $definition->setArguments(new Reference('db.connection_string'), 'user', 'password');
 ```
 

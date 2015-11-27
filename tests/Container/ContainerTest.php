@@ -4,8 +4,8 @@ namespace Assembly\Test\Container;
 
 use Assembly\AliasDefinition;
 use Assembly\Container\Container;
-use Assembly\FactoryDefinition;
-use Assembly\InstanceDefinition;
+use Assembly\FactoryCallDefinition;
+use Assembly\ObjectDefinition;
 use Assembly\ParameterDefinition;
 use Assembly\Reference;
 use Assembly\Test\Container\Fixture\Class1;
@@ -45,7 +45,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_instance_definitions()
     {
-        $definition = new InstanceDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
         $definition->addPropertyAssignment('publicField', 'public field');
         $definition->addConstructorArgument('constructor param1');
         $definition->addConstructorArgument('constructor param2');
@@ -73,7 +73,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_references_in_instance_definitions()
     {
-        $definition = new InstanceDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
         $definition->addPropertyAssignment('publicField', new Reference('ref1'));
         $definition->addConstructorArgument(new Reference('ref2'));
         $definition->addConstructorArgument(new Reference('ref3'));
@@ -107,7 +107,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_instance_definitions_as_singleton()
     {
-        $definition = new InstanceDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
         $definition->addConstructorArgument('param1');
         $definition->addConstructorArgument('param2');
 
@@ -142,8 +142,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function resolves_factory_definitions()
     {
         $provider = new FakeDefinitionProvider([
-            new FactoryDefinition('foo', new Reference('factory'), 'create'),
-            new InstanceDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
+            new FactoryCallDefinition('foo', new Reference('factory'), 'create'),
+            new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
         ]);
 
         $container = new Container([], [$provider]);
@@ -157,12 +157,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_factory_instance_from_the_container()
     {
-        $factoryInstance = new InstanceDefinition('factory', 'Assembly\Test\Container\Fixture\FactoryWithDependency');
+        $factoryInstance = new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\FactoryWithDependency');
         $factoryInstance->addConstructorArgument(new Reference('subFactory'));
         $provider = new FakeDefinitionProvider([
-            new FactoryDefinition('foo', new Reference('factory'), 'create'),
+            new FactoryCallDefinition('foo', new Reference('factory'), 'create'),
             $factoryInstance,
-            new InstanceDefinition('subFactory', 'Assembly\Test\Container\Fixture\Factory'),
+            new ObjectDefinition('subFactory', 'Assembly\Test\Container\Fixture\Factory'),
         ]);
 
         $container = new Container([], [$provider]);
@@ -177,8 +177,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function passes_the_requested_entry_to_the_factory()
     {
         $provider = new FakeDefinitionProvider([
-            new FactoryDefinition('foo', new Reference('factory'), 'returnsRequestedId'),
-            new InstanceDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
+            new FactoryCallDefinition('foo', new Reference('factory'), 'returnsRequestedId'),
+            new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
         ]);
 
         $container = new Container([], [$provider]);

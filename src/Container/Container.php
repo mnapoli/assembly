@@ -2,12 +2,12 @@
 
 namespace Assembly\Container;
 
-use Assembly\InstanceDefinition;
+use Assembly\ObjectDefinition;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Definition\AliasDefinitionInterface;
 use Interop\Container\Definition\DefinitionInterface;
 use Interop\Container\Definition\DefinitionProviderInterface;
-use Interop\Container\Definition\FactoryDefinitionInterface;
+use Interop\Container\Definition\FactoryCallDefinitionInterface;
 use Interop\Container\Definition\ParameterDefinitionInterface;
 use Interop\Container\Definition\ReferenceInterface;
 
@@ -81,7 +81,7 @@ class Container implements ContainerInterface
         switch (true) {
             case $definition instanceof ParameterDefinitionInterface:
                 return $definition->getValue();
-            case $definition instanceof InstanceDefinition:
+            case $definition instanceof ObjectDefinition:
                 $reflection = new \ReflectionClass($definition->getClassName());
 
                 // Create the instance
@@ -105,8 +105,8 @@ class Container implements ContainerInterface
                 return $service;
             case $definition instanceof AliasDefinitionInterface:
                 return $this->get($definition->getTarget());
-            case $definition instanceof FactoryDefinitionInterface:
-                $factory = $this->get($definition->getReference()->getTarget());
+            case $definition instanceof FactoryCallDefinitionInterface:
+                $factory = $this->get($definition->getFactory()->getTarget());
                 $methodName = $definition->getMethodName();
                 return $factory->$methodName($requestedId);
             default:

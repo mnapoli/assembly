@@ -2,10 +2,10 @@
 
 namespace Assembly;
 
-use Interop\Container\Definition\FactoryDefinitionInterface;
+use Interop\Container\Definition\FactoryCallDefinitionInterface;
 use Interop\Container\Definition\ReferenceInterface;
 
-class FactoryDefinition extends NamedDefinition implements FactoryDefinitionInterface
+class FactoryCallDefinition extends NamedDefinition implements FactoryCallDefinitionInterface
 {
     /**
      * @var ReferenceInterface|string

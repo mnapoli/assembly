@@ -1,8 +1,8 @@
 <?php
 
-namespace Assembly;
+namespace Assembly\ObjectInitializer;
 
-use Interop\Container\Definition\PropertyAssignmentInterface;
+use Interop\Container\Definition\ObjectInitializer\PropertyAssignmentInterface;
 use Interop\Container\Definition\ReferenceInterface;
 
 class PropertyAssignment implements PropertyAssignmentInterface
@@ -13,7 +13,7 @@ class PropertyAssignment implements PropertyAssignmentInterface
     private $propertyName;
 
     /**
-     * @var scalar|ReferenceInterface
+     * @var string|number|bool|array|ReferenceInterface
      */
     private $value;
 
