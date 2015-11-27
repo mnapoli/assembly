@@ -106,9 +106,16 @@ class Container implements ContainerInterface
             case $definition instanceof AliasDefinitionInterface:
                 return $this->get($definition->getTarget());
             case $definition instanceof FactoryCallDefinitionInterface:
-                $factory = $this->get($definition->getFactory()->getTarget());
+                $factory = $definition->getFactory();
                 $methodName = $definition->getMethodName();
-                return $factory->$methodName($requestedId);
+
+                if (is_string($factory)) {
+                    return $factory::$methodName($requestedId);
+                } elseif ($factory instanceof ReferenceInterface) {
+                    $factory = $this->get($factory->getTarget());
+                    return $factory->$methodName($requestedId);
+                }
+                throw new InvalidDefinition(sprintf('Definition "%s" does not return a valid factory'));
             default:
                 throw UnsupportedDefinition::fromDefinition($definition);
         }

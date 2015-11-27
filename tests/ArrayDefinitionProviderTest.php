@@ -26,8 +26,10 @@ class ArrayDefinitionProviderTest extends \PHPUnit_Framework_TestCase
                 ->addMethodCall('setSomething', 'param1', \Assembly\get('parameter')),
 
             'factory.service' => \Assembly\object('Assembly\Test\Container\Fixture\Factory'),
-            'factory' => \Assembly\factory('factory.service', 'create')
+            'factory' => \Assembly\factory(\Assembly\get('factory.service'), 'create')
                 ->setArguments('param1'),
+
+            'static_factory' => \Assembly\factory('Assembly\Test\Container\Fixture\Factory', 'staticCreate'),
 
             'alias' => \Assembly\alias('parameter'),
         ]);
@@ -35,7 +37,7 @@ class ArrayDefinitionProviderTest extends \PHPUnit_Framework_TestCase
         /** @var DefinitionInterface[] $definitions */
         $definitions = $provider->getDefinitions();
 
-        $this->assertCount(5, $definitions);
+        $this->assertCount(6, $definitions);
 
         $this->assertEquals(new ParameterDefinition('parameter', 'Hello world'), $definitions[0]);
 
@@ -49,6 +51,9 @@ class ArrayDefinitionProviderTest extends \PHPUnit_Framework_TestCase
         $expectedFactory = new FactoryCallDefinition('factory', new Reference('factory.service'), 'create');
         $expectedFactory->setArguments('param1');
         $this->assertEquals($expectedFactory, $definitions[3]);
-        $this->assertEquals(new AliasDefinition('alias', 'parameter'), $definitions[4]);
+        $expectedFactory = new FactoryCallDefinition('static_factory', 'Assembly\Test\Container\Fixture\Factory', 'staticCreate');
+        $this->assertEquals($expectedFactory, $definitions[4]);
+
+        $this->assertEquals(new AliasDefinition('alias', 'parameter'), $definitions[5]);
     }
 }

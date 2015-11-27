@@ -28,9 +28,7 @@ class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
                 ->setConstructorArguments('warning', \Assembly\get('logger.destination'))
                 ->addMethodCall('setDebug', true),
 
-            'super_mailer' => \Assembly\factory('mailer.factory', 'create'),
-            'super_mailer.factory' => \Assembly\instance('MailerFactory')
-                ->setArguments('smtp'),
+            'super_mailer' => \Assembly\factory('MailerFactory', 'create'),
 
             'mailer' => \Assembly\alias('super_mailer'),
         ];
@@ -108,12 +106,18 @@ The definition above will return the result of `new PDO($container->get('db.conn
 
 ### FactoryCallDefinition
 
+The definition below will call the `create()` method on the `db.factory` container entry and return its result:
+
 ```php
 $definition = new FactoryCallDefinition('db', new Reference('db.factory'), 'create');
 $definition->setArguments(new Reference('db.connection_string'), 'user', 'password');
 ```
 
-The definition above will call the `create()` method on the `db.factory` container entry and return its result.
+The definition below will call the static `Acme\DbFactory::create()` method:
+
+```php
+$definition = new FactoryCallDefinition('db', 'Acme\DbFactory', 'create');
+```
 
 ## Container
 

@@ -2,6 +2,8 @@
 
 namespace Assembly;
 
+use Interop\Container\Definition\ReferenceInterface;
+
 if (!function_exists('Assembly\object')) {
 
     /**
@@ -19,14 +21,15 @@ if (!function_exists('Assembly\object')) {
     /**
      * Create a "factory call" definition.
      *
-     * @param string $service ID of the service on which to call the method.
+     * @param ReferenceInterface|string $factory Reference to the service on which to call the method
+     *                                           or fully qualified class name for static calls.
      * @param string $method Method to call on the service.
      *
      * @return FactoryCallDefinition
      */
-    function factory($service, $method)
+    function factory($factory, $method)
     {
-        return new FactoryCallDefinition(null, new Reference($service), $method);
+        return new FactoryCallDefinition(null, $factory, $method);
     }
 
     /**

@@ -10,6 +10,26 @@ class FactoryCallDefinitionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function supports_service_method_call()
+    {
+        $definition = new FactoryCallDefinition('id', new Reference('service'), 'method');
+
+        $this->assertEquals(new Reference('service'), $definition->getFactory());
+    }
+
+    /**
+     * @test
+     */
+    public function supports_static_call()
+    {
+        $definition = new FactoryCallDefinition('id', 'SomeClass', 'method');
+
+        $this->assertSame('SomeClass', $definition->getFactory());
+    }
+
+    /**
+     * @test
+     */
     public function accepts_arguments()
     {
         $definition = new FactoryCallDefinition('id', new Reference('service'), 'method');

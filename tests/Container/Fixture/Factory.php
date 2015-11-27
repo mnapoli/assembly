@@ -13,4 +13,9 @@ class Factory
     {
         return $requestedId;
     }
+
+    public static function staticCreate()
+    {
+        return 'Hello';
+    }
 }

@@ -139,11 +139,26 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function resolves_factory_definitions()
+    public function resolves_service_factory_definitions()
     {
         $provider = new FakeDefinitionProvider([
             new FactoryCallDefinition('foo', new Reference('factory'), 'create'),
             new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
+        ]);
+
+        $container = new Container([], [$provider]);
+
+        $this->assertTrue($container->has('foo'));
+        $this->assertSame('Hello', $container->get('foo'));
+    }
+
+    /**
+     * @test
+     */
+    public function resolves_static_factory_definitions()
+    {
+        $provider = new FakeDefinitionProvider([
+            new FactoryCallDefinition('foo', 'Assembly\Test\Container\Fixture\Factory', 'staticCreate'),
         ]);
 
         $container = new Container([], [$provider]);
