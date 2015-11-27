@@ -32,6 +32,11 @@ abstract class NamedDefinition implements DefinitionInterface
         $this->identifier = $identifier;
     }
 
+    /**
+     * Create a reference to the current container entry.
+     *
+     * @return Reference
+     */
     public function createReference()
     {
         return new Reference($this->getIdentifier());
