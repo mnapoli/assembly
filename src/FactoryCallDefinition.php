@@ -20,7 +20,7 @@ class FactoryCallDefinition extends NamedDefinition implements FactoryCallDefini
     /**
      * @var array
      */
-    private $arguments;
+    private $arguments = [];
 
     /**
      * @param string $identifier
