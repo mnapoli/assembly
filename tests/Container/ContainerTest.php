@@ -192,8 +192,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function uses_the_provided_factory_arguments()
     {
         $provider = new FakeDefinitionProvider([
-            (new FactoryCallDefinition('foo', new Reference('factory'), 'returnsRequestedId'))->setArguments('foobar'),
+            (new FactoryCallDefinition('foo', new Reference('factory'), 'returnsParameters'))
+                ->setArguments('foo', new Reference('bar')),
             new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
+            new ParameterDefinition('bar', 'bar'),
         ]);
 
         $container = new Container([], [$provider]);

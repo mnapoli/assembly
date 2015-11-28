@@ -108,6 +108,7 @@ class Container implements ContainerInterface
                 $factory = $definition->getFactory();
                 $methodName = $definition->getMethodName();
                 $arguments = (array) $definition->getArguments();
+                $arguments = array_map([$this, 'resolveReference'], $arguments);
 
                 if (is_string($factory)) {
                     return call_user_func_array($factory. '::' .$methodName, $arguments);
