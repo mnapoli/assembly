@@ -47,7 +47,7 @@ class Container implements ContainerInterface
             throw EntryNotFound::fromId($id);
         }
 
-        $this->entries[$id] = $this->resolveDefinition($this->definitions[$id], $id);
+        $this->entries[$id] = $this->resolveDefinition($this->definitions[$id]);
 
         return $this->entries[$id];
     }
@@ -76,7 +76,7 @@ class Container implements ContainerInterface
      * @throws UnsupportedDefinition
      * @throws EntryNotFound A dependency was not found.
      */
-    private function resolveDefinition(DefinitionInterface $definition, $requestedId)
+    private function resolveDefinition(DefinitionInterface $definition)
     {
         switch (true) {
             case $definition instanceof ParameterDefinitionInterface:
@@ -114,7 +114,6 @@ class Container implements ContainerInterface
                     return call_user_func_array($factory. '::' .$methodName, $arguments);
                 } elseif ($factory instanceof ReferenceInterface) {
                     $factory = $this->get($factory->getTarget());
-
                     return call_user_func_array([$factory, $methodName], $arguments);
                 }
                 throw new InvalidDefinition(sprintf('Definition "%s" does not return a valid factory'));
