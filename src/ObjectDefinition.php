@@ -34,12 +34,14 @@ class ObjectDefinition extends NamedDefinition implements ObjectDefinitionInterf
     /**
      * @param string $identifier
      * @param string $className
+     * @param array  $constructorArguments
      */
-    public function __construct($identifier, $className)
+    public function __construct($identifier, $className, array $constructorArguments = [])
     {
         parent::__construct($identifier);
 
         $this->className = $className;
+        $this->constructorArguments = $constructorArguments;
     }
 
     /**
