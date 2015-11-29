@@ -12,15 +12,15 @@
     "autoload": {
         "psr-4": {
             "Assembly\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Assembly\\Test\\": "tests/"
         },
         "files": [
             "src/functions.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Assembly\\Test\\": "tests/"
+        }
     },
     "require": {
         "php": ">=5.4",
