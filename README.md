@@ -76,11 +76,11 @@ return [
 
 This definition will define a container entry `"db.port"`. That means `get('db.port')` will return `3306`.
 
-### ReferenceDefinition
+### Reference
 
 ```php
 return [
-    'logger' => new ReferenceDefinition('monolog'), 
+    'logger' => new Reference('monolog'),
 ];
 ```
 
