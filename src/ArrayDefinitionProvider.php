@@ -2,6 +2,7 @@
 
 namespace Assembly;
 
+use Interop\Container\Definition\DefinitionInterface;
 use Interop\Container\Definition\DefinitionProviderInterface;
 
 class ArrayDefinitionProvider implements DefinitionProviderInterface
@@ -28,13 +29,11 @@ class ArrayDefinitionProvider implements DefinitionProviderInterface
         $definitions = [];
 
         foreach ($this->getArrayDefinitions() as $identifier => $definition) {
-            if ($definition instanceof NamedDefinition) {
-                $definition->setIdentifier($identifier);
-            } else {
-                $definition = new ParameterDefinition($identifier, $definition);
+            if (!$definition instanceof DefinitionInterface) {
+                $definition = new ParameterDefinition($definition);
             }
 
-            $definitions[] = $definition;
+            $definitions[$identifier] = $definition;
         }
 
         return $definitions;

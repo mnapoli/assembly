@@ -7,9 +7,9 @@ use Assembly\ObjectInitializer\PropertyAssignment;
 use Interop\Container\Definition\ObjectDefinitionInterface;
 use Interop\Container\Definition\ObjectInitializer\MethodCallInterface;
 use Interop\Container\Definition\ObjectInitializer\PropertyAssignmentInterface;
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
-class ObjectDefinition extends NamedDefinition implements ObjectDefinitionInterface
+class ObjectDefinition implements ObjectDefinitionInterface
 {
     /**
      * @var string
@@ -32,18 +32,15 @@ class ObjectDefinition extends NamedDefinition implements ObjectDefinitionInterf
     private $methodCalls = [];
 
     /**
-     * @param string $identifier
      * @param string $className
      */
-    public function __construct($identifier, $className)
+    public function __construct($className)
     {
-        parent::__construct($identifier);
-
         $this->className = $className;
     }
 
     /**
-     * @param string|number|bool|array|ReferenceInterface $argument
+     * @param string|number|bool|array|ReferenceDefinitionInterface $argument
      *
      * @return $this
      */
@@ -57,8 +54,8 @@ class ObjectDefinition extends NamedDefinition implements ObjectDefinitionInterf
     /**
      * Set constructor arguments. This method take as many parameters as necessary.
      *
-     * @param string|number|bool|array|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
-     * @param string|number|bool|array|ReferenceInterface ...
+     * @param string|number|bool|array|ReferenceDefinitionInterface $argument Can be a scalar value or a reference to another entry.
+     * @param string|number|bool|array|ReferenceDefinitionInterface ...
      *
      * @return $this
      */
@@ -73,7 +70,7 @@ class ObjectDefinition extends NamedDefinition implements ObjectDefinitionInterf
      * Set a value to assign to a property.
      *
      * @param string $propertyName Name of the property to set.
-     * @param string|number|bool|array|ReferenceInterface $value Can be a scalar value or a reference to another entry.
+     * @param string|number|bool|array|ReferenceDefinitionInterface $value Can be a scalar value or a reference to another entry.
      *
      * @return $this
      */
@@ -90,7 +87,7 @@ class ObjectDefinition extends NamedDefinition implements ObjectDefinitionInterf
      * After the $methodName parameter, this method take as many parameters as necessary.
      *
      * @param string $methodName Name of the method to call.
-     * @param string|number|bool|array|ReferenceInterface... Can be a scalar value, an array of scalar or
+     * @param string|number|bool|array|ReferenceDefinitionInterface... Can be a scalar value, an array of scalar or
      * a reference to another entry. See \Assembly\ObjectInitializer\MethodCall::__construct fore more informations.
      *
      * @return $this

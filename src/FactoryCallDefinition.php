@@ -3,12 +3,12 @@
 namespace Assembly;
 
 use Interop\Container\Definition\FactoryCallDefinitionInterface;
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
-class FactoryCallDefinition extends NamedDefinition implements FactoryCallDefinitionInterface
+class FactoryCallDefinition implements FactoryCallDefinitionInterface
 {
     /**
-     * @var ReferenceInterface|string
+     * @var ReferenceDefinitionInterface|string
      */
     private $factory;
 
@@ -23,14 +23,11 @@ class FactoryCallDefinition extends NamedDefinition implements FactoryCallDefini
     private $arguments = [];
 
     /**
-     * @param string $identifier
-     * @param ReferenceInterface|string $factory A reference to the service being called or a fully qualified class name for static calls
+     * @param ReferenceDefinitionInterface|string $factory A reference to the service being called or a fully qualified class name for static calls
      * @param string $methodName
      */
-    public function __construct($identifier, $factory, $methodName)
+    public function __construct($factory, $methodName)
     {
-        parent::__construct($identifier);
-
         $this->factory = $factory;
         $this->methodName = $methodName;
     }
@@ -38,8 +35,8 @@ class FactoryCallDefinition extends NamedDefinition implements FactoryCallDefini
     /**
      * Set the arguments to pass when calling the factory.
      *
-     * @param string|number|bool|array|ReferenceInterface $argument Can be a scalar value or a reference to another entry.
-     * @param string|number|bool|array|ReferenceInterface ...
+     * @param string|number|bool|array|ReferenceDefinitionInterface $argument Can be a scalar value or a reference to another entry.
+     * @param string|number|bool|array|ReferenceDefinitionInterface ...
      *
      * @return $this
      */

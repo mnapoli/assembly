@@ -4,7 +4,7 @@ namespace Assembly;
 
 use Interop\Container\Definition\ParameterDefinitionInterface;
 
-class ParameterDefinition extends NamedDefinition implements ParameterDefinitionInterface
+class ParameterDefinition implements ParameterDefinitionInterface
 {
     /**
      * @var string
@@ -12,13 +12,10 @@ class ParameterDefinition extends NamedDefinition implements ParameterDefinition
     private $value;
 
     /**
-     * @param string $identifier
      * @param string $value
      */
-    public function __construct($identifier, $value)
+    public function __construct($value)
     {
-        parent::__construct($identifier);
-
         $this->value = $value;
     }
 

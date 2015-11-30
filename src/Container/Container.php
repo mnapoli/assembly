@@ -4,12 +4,11 @@ namespace Assembly\Container;
 
 use Assembly\ObjectDefinition;
 use Interop\Container\ContainerInterface;
-use Interop\Container\Definition\AliasDefinitionInterface;
 use Interop\Container\Definition\DefinitionInterface;
 use Interop\Container\Definition\DefinitionProviderInterface;
 use Interop\Container\Definition\FactoryCallDefinitionInterface;
 use Interop\Container\Definition\ParameterDefinitionInterface;
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
 /**
  * Simple immutable container that can resolve standard definitions.
@@ -62,8 +61,8 @@ class Container implements ContainerInterface
      */
     private function addProvider(DefinitionProviderInterface $definitionProvider)
     {
-        foreach ($definitionProvider->getDefinitions() as $definition) {
-            $this->definitions[$definition->getIdentifier()] = $definition;
+        foreach ($definitionProvider->getDefinitions() as $identifier => $definition) {
+            $this->definitions[$identifier] = $definition;
         }
     }
 
@@ -103,7 +102,7 @@ class Container implements ContainerInterface
                 }
 
                 return $service;
-            case $definition instanceof AliasDefinitionInterface:
+            case $definition instanceof ReferenceDefinitionInterface:
                 return $this->get($definition->getTarget());
             case $definition instanceof FactoryCallDefinitionInterface:
                 $factory = $definition->getFactory();
@@ -111,7 +110,7 @@ class Container implements ContainerInterface
 
                 if (is_string($factory)) {
                     return $factory::$methodName($requestedId);
-                } elseif ($factory instanceof ReferenceInterface) {
+                } elseif ($factory instanceof ReferenceDefinitionInterface) {
                     $factory = $this->get($factory->getTarget());
                     return $factory->$methodName($requestedId);
                 }
@@ -124,13 +123,13 @@ class Container implements ContainerInterface
     /**
      * Resolve a variable that can be a reference.
      *
-     * @param ReferenceInterface|mixed $value
+     * @param ReferenceDefinitionInterface|mixed $value
      * @return mixed
      * @throws EntryNotFound The dependency was not found.
      */
     private function resolveReference($value)
     {
-        if ($value instanceof ReferenceInterface) {
+        if ($value instanceof ReferenceDefinitionInterface) {
             $value = $this->get($value->getTarget());
         }
 

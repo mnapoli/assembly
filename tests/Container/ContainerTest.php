@@ -31,7 +31,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function resolves_parameter_definitions()
     {
         $provider = new FakeDefinitionProvider([
-            new ParameterDefinition('foo', 'bar'),
+            'foo' => new ParameterDefinition('bar'),
         ]);
 
         $container = new Container([], [$provider]);
@@ -45,14 +45,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_instance_definitions()
     {
-        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('Assembly\Test\Container\Fixture\Class1');
         $definition->addPropertyAssignment('publicField', 'public field');
         $definition->addConstructorArgument('constructor param1');
         $definition->addConstructorArgument('constructor param2');
         $definition->addMethodCall('setSomething', 'setter param1', 'setter param2');
 
         $provider = new FakeDefinitionProvider([
-            $definition,
+            'foo' => $definition,
         ]);
 
         $container = new Container([], [$provider]);
@@ -73,14 +73,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_references_in_instance_definitions()
     {
-        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('Assembly\Test\Container\Fixture\Class1');
         $definition->addPropertyAssignment('publicField', new Reference('ref1'));
         $definition->addConstructorArgument(new Reference('ref2'));
         $definition->addConstructorArgument(new Reference('ref3'));
         $definition->addMethodCall('setSomething', new Reference('ref4'), new Reference('ref5'));
 
         $provider = new FakeDefinitionProvider([
-            $definition,
+            'foo' => $definition,
         ]);
 
         $container = new Container([
@@ -107,12 +107,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_instance_definitions_as_singleton()
     {
-        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('Assembly\Test\Container\Fixture\Class1');
         $definition->addConstructorArgument('param1');
         $definition->addConstructorArgument('param2');
 
         $provider = new FakeDefinitionProvider([
-            $definition,
+            'foo' => $definition,
         ]);
 
         $container = new Container([], [$provider]);
@@ -126,8 +126,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function resolves_alias_definitions()
     {
         $provider = new FakeDefinitionProvider([
-            new AliasDefinition('foo', 'bar'),
-            new ParameterDefinition('bar', 'qux'),
+            'foo' => new Reference('bar'),
+            'bar' => new ParameterDefinition('qux'),
         ]);
 
         $container = new Container([], [$provider]);
@@ -142,8 +142,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function resolves_service_factory_definitions()
     {
         $provider = new FakeDefinitionProvider([
-            new FactoryCallDefinition('foo', new Reference('factory'), 'create'),
-            new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
+            'foo' => new FactoryCallDefinition(new Reference('factory'), 'create'),
+            'factory' => new ObjectDefinition('Assembly\Test\Container\Fixture\Factory'),
         ]);
 
         $container = new Container([], [$provider]);
@@ -158,7 +158,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function resolves_static_factory_definitions()
     {
         $provider = new FakeDefinitionProvider([
-            new FactoryCallDefinition('foo', 'Assembly\Test\Container\Fixture\Factory', 'staticCreate'),
+            'foo' => new FactoryCallDefinition('Assembly\Test\Container\Fixture\Factory', 'staticCreate'),
         ]);
 
         $container = new Container([], [$provider]);
@@ -172,12 +172,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_factory_instance_from_the_container()
     {
-        $factoryInstance = new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\FactoryWithDependency');
+        $factoryInstance = new ObjectDefinition('Assembly\Test\Container\Fixture\FactoryWithDependency');
         $factoryInstance->addConstructorArgument(new Reference('subFactory'));
         $provider = new FakeDefinitionProvider([
-            new FactoryCallDefinition('foo', new Reference('factory'), 'create'),
-            $factoryInstance,
-            new ObjectDefinition('subFactory', 'Assembly\Test\Container\Fixture\Factory'),
+            'foo' => new FactoryCallDefinition(new Reference('factory'), 'create'),
+            'factory' => $factoryInstance,
+            'subFactory' => new ObjectDefinition('Assembly\Test\Container\Fixture\Factory'),
         ]);
 
         $container = new Container([], [$provider]);
@@ -192,8 +192,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function passes_the_requested_entry_to_the_factory()
     {
         $provider = new FakeDefinitionProvider([
-            new FactoryCallDefinition('foo', new Reference('factory'), 'returnsRequestedId'),
-            new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
+            'foo' => new FactoryCallDefinition(new Reference('factory'), 'returnsRequestedId'),
+            'factory' => new ObjectDefinition('Assembly\Test\Container\Fixture\Factory'),
         ]);
 
         $container = new Container([], [$provider]);

@@ -2,7 +2,7 @@
 
 namespace Assembly;
 
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
 if (!function_exists('Assembly\object')) {
 
@@ -15,13 +15,13 @@ if (!function_exists('Assembly\object')) {
      */
     function object($className)
     {
-        return new ObjectDefinition(null, $className);
+        return new ObjectDefinition($className);
     }
 
     /**
      * Create a "factory call" definition.
      *
-     * @param ReferenceInterface|string $factory Reference to the service on which to call the method
+     * @param ReferenceDefinitionInterface|string $factory Reference to the service on which to call the method
      *                                           or fully qualified class name for static calls.
      * @param string $method Method to call on the service.
      *
@@ -29,19 +29,7 @@ if (!function_exists('Assembly\object')) {
      */
     function factory($factory, $method)
     {
-        return new FactoryCallDefinition(null, $factory, $method);
-    }
-
-    /**
-     * Create an alias definition that aliases a container entry to another.
-     *
-     * @param string $target
-     *
-     * @return AliasDefinition
-     */
-    function alias($target)
-    {
-        return new AliasDefinition(null, $target);
+        return new FactoryCallDefinition($factory, $method);
     }
 
     /**

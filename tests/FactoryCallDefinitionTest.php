@@ -12,7 +12,7 @@ class FactoryCallDefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function supports_service_method_call()
     {
-        $definition = new FactoryCallDefinition('id', new Reference('service'), 'method');
+        $definition = new FactoryCallDefinition(new Reference('service'), 'method');
 
         $this->assertEquals(new Reference('service'), $definition->getFactory());
     }
@@ -22,7 +22,7 @@ class FactoryCallDefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function supports_static_call()
     {
-        $definition = new FactoryCallDefinition('id', 'SomeClass', 'method');
+        $definition = new FactoryCallDefinition('SomeClass', 'method');
 
         $this->assertSame('SomeClass', $definition->getFactory());
     }

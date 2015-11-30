@@ -2,9 +2,9 @@
 
 namespace Assembly;
 
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
-class Reference implements ReferenceInterface
+class Reference implements ReferenceDefinitionInterface
 {
     /**
      * @var string
