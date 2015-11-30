@@ -69,7 +69,9 @@ If you do not want to use the function helpers, you can also create definition i
 ### ParameterDefinition
 
 ```php
-$definition = new ParameterDefinition(3306);
+return [
+    'db.port' => new ParameterDefinition(3306),
+];
 ```
 
 This definition will define a container entry `"db.port"`. That means `get('db.port')` will return `3306`.
@@ -77,7 +79,9 @@ This definition will define a container entry `"db.port"`. That means `get('db.p
 ### ReferenceDefinition
 
 ```php
-$definition = new ReferenceDefinition('monolog');
+return [
+    'logger' => new ReferenceDefinition('monolog'), 
+];
 ```
 
 This definition will alias the entry "logger" to the entry "monolog". That means that `get('logger')` will return the result of `get('monolog')`.
