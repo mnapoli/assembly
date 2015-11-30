@@ -78,6 +78,35 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function resolves_recursive_references_in_instance_definitions()
+    {
+        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition->addPropertyAssignment('publicField', [new Reference('ref1')]);
+        $definition->addConstructorArgument([new Reference('ref2')]);
+        $definition->addConstructorArgument([new Reference('ref3')]);
+        $definition->addMethodCall('setSomething', [new Reference('ref4')], [new Reference('ref5')]);
+
+        $resolver = new DefinitionResolver(new Container([
+            'ref1' => 'public field',
+            'ref2' => 'constructor param1',
+            'ref3' => 'constructor param2',
+            'ref4' => 'setter param1',
+            'ref5' => 'setter param2',
+        ]));
+
+        /** @var Class1 $service */
+        $service = $resolver->resolve($definition);
+        $this->assertInstanceOf('Assembly\Test\Container\Fixture\Class1', $service);
+        $this->assertSame(['public field'], $service->publicField);
+        $this->assertSame(['constructor param1'], $service->constructorParam1);
+        $this->assertSame(['constructor param2'], $service->constructorParam2);
+        $this->assertSame(['setter param1'], $service->setterParam1);
+        $this->assertSame(['setter param2'], $service->setterParam2);
+    }
+
+    /**
+     * @test
+     */
     public function resolves_alias_definitions()
     {
         $resolver = new DefinitionResolver(new Container([
