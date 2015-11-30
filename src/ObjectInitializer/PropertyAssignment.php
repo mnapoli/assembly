@@ -3,7 +3,7 @@
 namespace Assembly\ObjectInitializer;
 
 use Interop\Container\Definition\ObjectInitializer\PropertyAssignmentInterface;
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
 class PropertyAssignment implements PropertyAssignmentInterface
 {
@@ -13,13 +13,13 @@ class PropertyAssignment implements PropertyAssignmentInterface
     private $propertyName;
 
     /**
-     * @var string|number|bool|array|ReferenceInterface
+     * @var string|number|bool|array|ReferenceDefinitionInterface
      */
     private $value;
 
     /**
      * @param string $propertyName
-     * @param string|number|bool|array|ReferenceInterface $value
+     * @param string|number|bool|array|ReferenceDefinitionInterface $value
      */
     public function __construct($propertyName, $value)
     {

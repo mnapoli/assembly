@@ -3,7 +3,7 @@
 namespace Assembly\ObjectInitializer;
 
 use Interop\Container\Definition\ObjectInitializer\MethodCallInterface;
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
 class MethodCall implements MethodCallInterface
 {
@@ -13,13 +13,13 @@ class MethodCall implements MethodCallInterface
     private $methodName;
 
     /**
-     * @var mixed[]|ReferenceInterface[] Array of scalar or ReferenceInterface
+     * @var mixed[]|ReferenceDefinitionInterface[] Array of scalar or ReferenceDefinitionInterface
      */
     private $arguments = [];
 
     /**
      * @param string $methodName
-     * @param array $arguments Array of scalar or ReferenceInterface
+     * @param array $arguments Array of scalar or ReferenceDefinitionInterface
      */
     public function __construct($methodName, array $arguments)
     {
