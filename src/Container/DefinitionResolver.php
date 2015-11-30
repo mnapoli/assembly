@@ -4,11 +4,10 @@ namespace Assembly\Container;
 
 use Assembly\ObjectDefinition;
 use Interop\Container\ContainerInterface;
-use Interop\Container\Definition\AliasDefinitionInterface;
 use Interop\Container\Definition\DefinitionInterface;
 use Interop\Container\Definition\FactoryCallDefinitionInterface;
 use Interop\Container\Definition\ParameterDefinitionInterface;
-use Interop\Container\Definition\ReferenceInterface;
+use Interop\Container\Definition\ReferenceDefinitionInterface;
 
 /**
  * Resolves standard definitions.
@@ -65,7 +64,7 @@ class DefinitionResolver
 
                 return $service;
 
-            case $definition instanceof AliasDefinitionInterface:
+            case $definition instanceof ReferenceDefinitionInterface:
                 return $this->container->get($definition->getTarget());
 
             case $definition instanceof FactoryCallDefinitionInterface:
@@ -76,7 +75,7 @@ class DefinitionResolver
 
                 if (is_string($factory)) {
                     return call_user_func_array([$factory, $methodName], $arguments);
-                } elseif ($factory instanceof ReferenceInterface) {
+                } elseif ($factory instanceof ReferenceDefinitionInterface) {
                     $factory = $this->container->get($factory->getTarget());
                     return call_user_func_array([$factory, $methodName], $arguments);
                 }
@@ -90,13 +89,13 @@ class DefinitionResolver
     /**
      * Resolve a variable that can be a reference.
      *
-     * @param ReferenceInterface|mixed $value
+     * @param ReferenceDefinitionInterface|mixed $value
      * @return mixed
      * @throws EntryNotFound The dependency was not found.
      */
     private function resolveReference($value)
     {
-        if ($value instanceof ReferenceInterface) {
+        if ($value instanceof ReferenceDefinitionInterface) {
             $value = $this->container->get($value->getTarget());
         }
 

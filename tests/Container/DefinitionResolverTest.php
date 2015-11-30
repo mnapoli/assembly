@@ -20,7 +20,7 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
     {
         $resolver = new DefinitionResolver(new Container([]));
 
-        $this->assertSame('bar', $resolver->resolve(new ParameterDefinition('foo', 'bar')));
+        $this->assertSame('bar', $resolver->resolve(new ParameterDefinition('bar')));
     }
 
     /**
@@ -28,7 +28,7 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_instance_definitions()
     {
-        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('Assembly\Test\Container\Fixture\Class1');
         $definition->addPropertyAssignment('publicField', 'public field');
         $definition->addConstructorArgument('constructor param1');
         $definition->addConstructorArgument('constructor param2');
@@ -51,7 +51,7 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function resolves_references_in_instance_definitions()
     {
-        $definition = new ObjectDefinition('foo', 'Assembly\Test\Container\Fixture\Class1');
+        $definition = new ObjectDefinition('Assembly\Test\Container\Fixture\Class1');
         $definition->addPropertyAssignment('publicField', new Reference('ref1'));
         $definition->addConstructorArgument(new Reference('ref2'));
         $definition->addConstructorArgument(new Reference('ref3'));
@@ -84,7 +84,7 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
             'bar' => 'qux',
         ]));
 
-        $this->assertSame('qux', $resolver->resolve(new AliasDefinition('foo', 'bar')));
+        $this->assertSame('qux', $resolver->resolve(new Reference('bar')));
     }
 
     /**
@@ -93,11 +93,11 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
     public function resolves_service_factory_definitions()
     {
         $provider = new FakeDefinitionProvider([
-            new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
+            'factory' => new ObjectDefinition('Assembly\Test\Container\Fixture\Factory'),
         ]);
         $resolver = new DefinitionResolver(new Container([], [$provider]));
 
-        $result = $resolver->resolve(new FactoryCallDefinition('foo', new Reference('factory'), 'create'));
+        $result = $resolver->resolve(new FactoryCallDefinition(new Reference('factory'), 'create'));
 
         $this->assertSame('Hello', $result);
     }
@@ -109,7 +109,7 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
     {
         $resolver = new DefinitionResolver(new Container([]));
 
-        $definition = new FactoryCallDefinition('foo', 'Assembly\Test\Container\Fixture\Factory', 'staticCreate');
+        $definition = new FactoryCallDefinition('Assembly\Test\Container\Fixture\Factory', 'staticCreate');
 
         $this->assertSame('Hello', $resolver->resolve($definition));
     }
@@ -120,12 +120,12 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
     public function passes_the_provided_factory_arguments()
     {
         $provider = new FakeDefinitionProvider([
-            new ObjectDefinition('factory', 'Assembly\Test\Container\Fixture\Factory'),
-            new ParameterDefinition('bar', 'bar'),
+            'factory' => new ObjectDefinition('Assembly\Test\Container\Fixture\Factory'),
+            'bar' => new ParameterDefinition('bar'),
         ]);
         $resolver = new DefinitionResolver(new Container([], [$provider]));
 
-        $definition = (new FactoryCallDefinition('foo', new Reference('factory'), 'returnsParameters'))
+        $definition = (new FactoryCallDefinition(new Reference('factory'), 'returnsParameters'))
             ->setArguments('foo', new Reference('bar'));
 
         $this->assertSame('foobar', $resolver->resolve($definition));
