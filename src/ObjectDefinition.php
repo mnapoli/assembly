@@ -33,10 +33,12 @@ class ObjectDefinition implements ObjectDefinitionInterface
 
     /**
      * @param string $className
+     * @param array  $constructorArguments
      */
-    public function __construct($className)
+    public function __construct($className, array $constructorArguments = [])
     {
         $this->className = $className;
+        $this->constructorArguments = $constructorArguments;
     }
 
     /**

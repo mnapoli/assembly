@@ -24,7 +24,7 @@ class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
         return [
             'logger.destination' => '/var/log/myapp.log',
 
-            'logger' => \Assembly\instance('MyLogger')
+            'logger' => \Assembly\object('MyLogger')
                 ->setConstructorArguments('warning', \Assembly\get('logger.destination'))
                 ->addMethodCall('setDebug', true),
 
@@ -39,7 +39,7 @@ class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
 If you are using PHP 5.6 or above, you can import namespaced functions:
 
 ```php
-use function \Assembly\instance;
+use function \Assembly\object;
 use function \Assembly\alias;
 
 class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
@@ -47,7 +47,7 @@ class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
     public function getArrayDefinitions()
     {
         return [
-            'logger' => instance(MyLogger::class),
+            'logger' => object(MyLogger::class),
             'logger_alias' => alias('logger'),
         ];
     }

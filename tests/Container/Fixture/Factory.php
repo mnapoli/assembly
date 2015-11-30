@@ -9,9 +9,9 @@ class Factory
         return 'Hello';
     }
 
-    public function returnsRequestedId($requestedId)
+    public function returnsParameters($param1, $param2)
     {
-        return $requestedId;
+        return $param1 . $param2;
     }
 
     public static function staticCreate()
