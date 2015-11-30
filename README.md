@@ -30,7 +30,7 @@ class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
 
             'super_mailer' => \Assembly\factory('MailerFactory', 'create'),
 
-            'mailer' => \Assembly\alias('super_mailer'),
+            'mailer' => \Assembly\get('super_mailer'),
         ];
     }
 }
@@ -48,7 +48,7 @@ class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
     {
         return [
             'logger' => object(MyLogger::class),
-            'logger_alias' => alias('logger'),
+            'logger_alias' => get('logger'),
         ];
     }
 }
@@ -69,15 +69,15 @@ If you do not want to use the function helpers, you can also create definition i
 ### ParameterDefinition
 
 ```php
-$definition = new ParameterDefinition('db.port', 3306);
+$definition = new ParameterDefinition(3306);
 ```
 
 This definition will define a container entry `"db.port"`. That means `get('db.port')` will return `3306`.
 
-### AliasDefinition
+### ReferenceDefinition
 
 ```php
-$definition = new AliasDefinition('logger', 'monolog');
+$definition = new ReferenceDefinition('monolog');
 ```
 
 This definition will alias the entry "logger" to the entry "monolog". That means that `get('logger')` will return the result of `get('monolog')`.
@@ -85,7 +85,7 @@ This definition will alias the entry "logger" to the entry "monolog". That means
 ### ObjectDefinition
 
 ```php
-$definition = new ObjectDefinition('db', 'PDO');
+$definition = new ObjectDefinition('PDO');
 $definition->addConstructorArgument('mysql:host=localhost;dbname=test');
 $definition->addConstructorArgument('user');
 $definition->addConstructorArgument('password');
@@ -96,7 +96,7 @@ The definition above will return the result of `new PDO('mysql:host=localhost;db
 References can also be used:
 
 ```php
-$definition = new ObjectDefinition('db', 'PDO');
+$definition = new ObjectDefinition('PDO');
 $definition->addConstructorArgument(new Reference('db.connection_string'));
 $definition->addConstructorArgument('user');
 $definition->addConstructorArgument('password');
@@ -109,14 +109,14 @@ The definition above will return the result of `new PDO($container->get('db.conn
 The definition below will call the `create()` method on the `db.factory` container entry and return its result:
 
 ```php
-$definition = new FactoryCallDefinition('db', new Reference('db.factory'), 'create');
+$definition = new FactoryCallDefinition(new Reference('db.factory'), 'create');
 $definition->setArguments(new Reference('db.connection_string'), 'user', 'password');
 ```
 
 The definition below will call the static `Acme\DbFactory::create()` method:
 
 ```php
-$definition = new FactoryCallDefinition('db', 'Acme\DbFactory', 'create');
+$definition = new FactoryCallDefinition('Acme\DbFactory', 'create');
 ```
 
 ## Container
