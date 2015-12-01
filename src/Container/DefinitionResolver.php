@@ -95,7 +95,9 @@ class DefinitionResolver
      */
     private function resolveReference($value)
     {
-        if ($value instanceof ReferenceDefinitionInterface) {
+        if (is_array($value)) {
+            return array_map([$this, 'resolveReference'], $value);
+        } elseif ($value instanceof ReferenceDefinitionInterface) {
             $value = $this->container->get($value->getTarget());
         }
 
