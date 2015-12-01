@@ -146,3 +146,12 @@ $container = new Container($entries, $definitionProviders);
 ```
 
 For simplicity's sake, the container is immutable and its API is very limited. You are encouraged to use any other compatible container if you are left unsatisfied.
+
+### Definition resolver
+
+The "definition resolver" of the container is written in a separate `Assembly\Container\DefinitionResolver` class. This class is meant to be reused in any other container that wishes to support *definition-interop*. Using it is very simple:
+
+```php
+$resolver = new \Assembly\Container\DefinitionResolver($container);
+$value = $resolver->resolve($definition);
+```
