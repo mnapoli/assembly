@@ -28,12 +28,13 @@ class Container implements ContainerInterface
 
     /**
      * @param array $entries Container entries.
+     * @param DefinitionProviderInterface[] $providers
      */
     public function __construct(array $entries, array $providers = [])
     {
         $this->entries = $entries;
         foreach ($providers as $provider) {
-            $this->addProvider($provider);
+            $this->definitions = array_merge($this->definitions, $provider->getDefinitions());
         }
 
         $this->resolver = new DefinitionResolver($this);
@@ -57,15 +58,5 @@ class Container implements ContainerInterface
     public function has($id)
     {
         return isset($this->definitions[$id]) || array_key_exists($id, $this->entries);
-    }
-
-    /**
-     * Register a definition provider.
-     */
-    private function addProvider(DefinitionProviderInterface $definitionProvider)
-    {
-        foreach ($definitionProvider->getDefinitions() as $identifier => $definition) {
-            $this->definitions[$identifier] = $definition;
-        }
     }
 }
