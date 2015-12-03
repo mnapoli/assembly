@@ -25,14 +25,14 @@
     "require": {
         "php": ">=5.4",
         "container-interop/container-interop": "~1.1",
-        "container-interop/definition-interop": "@dev"
+        "container-interop/definition-interop": "~0.2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.8"
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1-dev"
+            "dev-master": "0.2-dev"
         }
     }
 }
