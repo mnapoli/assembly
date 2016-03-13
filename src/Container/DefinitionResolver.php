@@ -2,12 +2,12 @@
 
 namespace Assembly\Container;
 
-use Assembly\ObjectDefinition;
 use Interop\Container\ContainerInterface;
 use Interop\Container\Definition\DefinitionInterface;
 use Interop\Container\Definition\FactoryCallDefinitionInterface;
 use Interop\Container\Definition\ParameterDefinitionInterface;
 use Interop\Container\Definition\ReferenceDefinitionInterface;
+use Interop\Container\Definition\ObjectDefinitionInterface;
 
 /**
  * Resolves standard definitions.
@@ -44,7 +44,7 @@ class DefinitionResolver
             case $definition instanceof ParameterDefinitionInterface:
                 return $definition->getValue();
 
-            case $definition instanceof ObjectDefinition:
+            case $definition instanceof ObjectDefinitionInterface:
                 $reflection = new \ReflectionClass($definition->getClassName());
 
                 // Create the instance
