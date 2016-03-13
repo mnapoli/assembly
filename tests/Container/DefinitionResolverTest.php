@@ -155,4 +155,20 @@ class DefinitionResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('foobar', $resolver->resolve($definition));
     }
+
+    /**
+     * @test
+     */
+    public function operates_on_any_object_service()
+    {
+        $serviceName = 'my_object';
+        $serviceClass = 'ArrayObject';
+        $serviceDefinition = new FakeObjectDefinition($serviceClass);
+        $provider = new FakeDefinitionProvider([
+            $serviceName => $serviceDefinition
+        ]);
+
+        $resolver = new DefinitionResolver(new Container([], [$provider]));
+        $this->assertInstanceOf($serviceClass, $resolver->resolve($serviceDefinition), 'Resolver cannot operate on alternative implementations of `ObjectDefinitionInterface`');
+    }
 }
