@@ -1,5 +1,7 @@
 # Assembly
 
+*This repository is experimental*
+
 *Assembly* provides an implementation for [definition-interop](https://github.com/container-interop/definition-interop) definitions as well as a compatible container.
 
 [![Build Status](https://travis-ci.org/mnapoli/assembly.svg?branch=master)](https://travis-ci.org/mnapoli/assembly)
