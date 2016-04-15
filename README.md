@@ -42,7 +42,7 @@ If you are using PHP 5.6 or above, you can import namespaced functions:
 
 ```php
 use function \Assembly\object;
-use function \Assembly\alias;
+use function \Assembly\get;
 
 class MyModuleDefinitionProvider extend \Assembly\ArrayDefinitionProvider
 {
